@@ -40,11 +40,13 @@ deno task test:coverage
 ## Test Coverage
 
 ### ✅ BaseService (Unit Tests)
+
 **File:** `src/shared/services/base.service.test.ts`  
 **Test Count:** 27 test cases  
 **Purpose:** Validate CRUD operations and lifecycle hooks
 
 **What's Tested:**
+
 - **CRUD Operations:**
   - `create()`: Insert with validation and hooks
   - `getAll()`: List all records
@@ -58,6 +60,7 @@ deno task test:coverage
   - `beforeDelete` / `afterDelete`: Cleanup operations
 
 **Key Patterns Demonstrated:**
+
 ```typescript
 // Testing hook execution order
 it("should execute beforeCreate and afterCreate hooks", async () => {
@@ -72,11 +75,13 @@ it("should execute beforeCreate and afterCreate hooks", async () => {
 ```
 
 ### ✅ Article Entity (Integration Tests)
+
 **File:** `src/entities/articles/article.test.ts`  
 **Test Count:** 14 test cases  
 **Purpose:** Full-stack integration testing with real HTTP requests
 
 **What's Tested:**
+
 - **Public Access:** Unauthenticated users can list/view published articles
 - **Authentication:** JWT token validation for protected routes
 - **Authorization:** Ownership checks (users can only edit their own articles)
@@ -87,6 +92,7 @@ it("should execute beforeCreate and afterCreate hooks", async () => {
   - Published vs draft filtering
 
 **Key Patterns Demonstrated:**
+
 ```typescript
 // Testing ownership authorization
 it("should deny non-owner from updating article", async () => {
@@ -104,10 +110,12 @@ it("should deny non-owner from updating article", async () => {
 ```
 
 ### ✅ Site Settings (Integration Tests)
+
 **Files:** `site-setting.test.ts` + `site-setting.admin.test.ts`  
 **Purpose:** Test custom business logic and admin panel integration
 
 **What's Tested:**
+
 - Public read access for all site settings
 - Superadmin-only write access (RBAC)
 - System setting protection (cannot delete, only reset)
@@ -115,6 +123,7 @@ it("should deny non-owner from updating article", async () => {
 - Admin panel CRUD operations (@tstack/admin)
 
 ### ✅ Authentication (Integration Tests)
+
 **File:** `src/auth/auth.test.ts`  
 **Purpose:** Test user registration, login, and JWT flow
 

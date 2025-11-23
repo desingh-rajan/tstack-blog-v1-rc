@@ -782,6 +782,7 @@ for (const [name, content] of Object.entries(files)) {
 ## 🎓 Reference Examples from This Repository
 
 ### Simple Entity (Articles)
+
 - **Service:** `src/entities/articles/article.service.ts` (~125 lines)
 - **Controller:** `src/entities/articles/article.controller.ts` (~55 lines)
 - **Routes:** `src/entities/articles/article.route.ts` (~18 lines)
@@ -793,6 +794,7 @@ for (const [name, content] of Object.entries(files)) {
   - SQL join (author name)
 
 ### Complex Entity (Site Settings)
+
 - **Service:** `src/entities/site_settings/site-setting.service.ts` (~145 lines)
 - **Controller:** `src/entities/site_settings/site-setting.controller.ts` (~115 lines)
 - **Routes:** `src/entities/site_settings/site-setting.route.ts` (~25 lines)
@@ -812,6 +814,7 @@ for (const [name, content] of Object.entries(files)) {
 After generating files, CLI should:
 
 1. **Auto-register routes** in `src/main.ts`:
+
    ```typescript
    import {{entityName}}Routes from "./entities/{{entityNamePlural}}/{{entityName}}.route.ts";
    {{#if withAdmin}}
@@ -825,26 +828,31 @@ After generating files, CLI should:
    ```
 
 2. **Run migration** (if not skipped):
+
    ```bash
    deno task db:migrate
    ```
 
 3. **Format code**:
+
    ```bash
    deno fmt
    ```
 
 4. **Run type check**:
+
    ```bash
    deno task check
    ```
 
 5. **Run tests** (if generated):
+
    ```bash
    deno task test src/entities/{{entityNamePlural}}/{{entityName}}.test.ts
    ```
 
 6. **Print success message**:
+
    ```
    ✅ Successfully generated {{EntityName}} entity!
    
@@ -883,12 +891,14 @@ After generating files, CLI should:
 ## 🚀 Integration with tstack-kit
 
 ### Phase 1: Backend Scaffold
+
 - ✅ Generate entity files based on this guide
 - ✅ Support all CLI options
 - ✅ Auto-register routes
 - ✅ Run migrations
 
 ### Phase 2: Fresh UI Scaffold (if --with-fresh-ui)
+
 - Generate Fresh UI components:
   - List page (`routes/{{entityNamePlural}}/index.tsx`)
   - Detail page (`routes/{{entityNamePlural}}/[id].tsx`)
@@ -899,6 +909,7 @@ After generating files, CLI should:
 - Generate TypeScript types (`entities/{{entityNamePlural}}/{{entityName}}.types.ts`)
 
 ### Phase 3: AI Assistance
+
 - Provide this repository as reference context
 - AI can analyze existing entities to understand patterns
 - AI can suggest appropriate options for new entities
@@ -909,6 +920,7 @@ After generating files, CLI should:
 ## 📝 Developer Experience
 
 ### Workflow
+
 1. Developer runs: `tstack-kit generate entity article --with-admin --public-routes=getAll,getById --auth=ownership --ownership-field=authorId`
 2. CLI generates 6 files with TODO comments
 3. Developer customizes:
@@ -919,6 +931,7 @@ After generating files, CLI should:
 4. Run migration, test, and deploy
 
 ### Time Savings
+
 - ❌ Manual: ~2-3 hours to write boilerplate for new entity
 - ✅ With CLI: ~10-15 minutes to customize generated scaffold
 - **90% time reduction!**

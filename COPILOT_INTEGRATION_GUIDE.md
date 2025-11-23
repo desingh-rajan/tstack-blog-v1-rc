@@ -4,7 +4,7 @@
 
 This repository (`tstack-blog-v1-rc`) serves as the **reference implementation** for tstack-kit CLI's intelligent scaffold generation system. It demonstrates the **Base Abstractions Pattern** that eliminates 70-80% of backend boilerplate code.
 
-**Repository URL:** https://github.com/desingh-rajan/tstack-blog-v1-rc
+**Repository URL:** <https://github.com/desingh-rajan/tstack-blog-v1-rc>
 
 ---
 
@@ -22,9 +22,11 @@ This repository should be used as:
 ## 📚 Key Documentation Files
 
 ### 1. Architecture Overview
+
 **File:** `docs/BASE_ABSTRACTIONS_ARCHITECTURE.md` (~800 lines)
 
 **What it explains:**
+
 - Complete architecture of BaseService, BaseController, and Route Factories
 - Lifecycle hooks pattern (beforeCreate, afterCreate, etc.)
 - Declarative authorization pattern (ownership checks, role-based access)
@@ -35,9 +37,11 @@ This repository should be used as:
 **Use this for:** Understanding the overall architecture and patterns
 
 ### 2. CLI Scaffold Generation
+
 **File:** `docs/CLI_SCAFFOLD_GUIDE.md` (~900 lines)
 
 **What it explains:**
+
 - CLI command structure and all available options
 - Complete file generation templates with Handlebars syntax
 - Template variable calculation logic
@@ -47,9 +51,11 @@ This repository should be used as:
 **Use this for:** Implementing the actual scaffold generation in CLI
 
 ### 3. Fresh UI Generation
+
 **File:** `docs/FRESH_UI_GENERATION_GUIDE.md` (~700 lines)
 
 **What it explains:**
+
 - Fresh UI admin panel generation
 - Component templates (DataTable, GenericForm, ShowPage, Pagination)
 - Entity config structure
@@ -59,9 +65,11 @@ This repository should be used as:
 **Use this for:** Generating Fresh UI components and routes
 
 ### 4. Testing Patterns
+
 **File:** `TESTING_COMPREHENSIVE_GUIDE.md` (~350 lines)
 
 **What it explains:**
+
 - Test patterns for lifecycle hooks
 - Authorization testing (ownership, roles, superadmin bypass)
 - Validation testing (Zod schemas + business rules)
@@ -75,9 +83,11 @@ This repository should be used as:
 ## 🏗️ Base Abstractions Components
 
 ### Layer 1: BaseService
+
 **File:** `src/shared/services/base.service.ts` (~185 lines)
 
 **Provides:**
+
 - Generic CRUD operations (getAll, getById, create, update, delete)
 - 6 lifecycle hooks (before/after for create/update/delete)
 - Automatic updatedAt timestamps
@@ -86,9 +96,11 @@ This repository should be used as:
 **Test Coverage:** 27 test cases in `src/shared/services/base.service.test.ts`
 
 ### Layer 2: BaseController
+
 **File:** `src/shared/controllers/base.controller.ts` (~300 lines)
 
 **Provides:**
+
 - Generic HTTP handlers for CRUD operations
 - Declarative authorization (authConfig in constructor)
 - Role-based access control
@@ -99,11 +111,14 @@ This repository should be used as:
 **Test Coverage:** Integration tests in entity test files (e.g., `article.test.ts`)
 
 ### Layer 3: Route Factories
+
 **Files:**
+
 - `src/shared/routes/base-route.factory.ts` (~75 lines) - CRUD routes
 - `src/shared/routes/admin-route.factory.ts` (~60 lines) - Admin panel routes
 
 **Provides:**
+
 - Auto-registration of routes
 - `publicRoutes` configuration (routes accessible without auth)
 - `disabledRoutes` configuration (routes not exposed)
@@ -114,9 +129,11 @@ This repository should be used as:
 ## 🔍 Reference Entity Implementations
 
 ### Simple Entity: Articles
+
 **Location:** `src/entities/articles/*`
 
 **Files:**
+
 - `article.model.ts` - Drizzle schema
 - `article.dto.ts` - Zod schemas
 - `article.service.ts` - Service with lifecycle hooks (125 lines)
@@ -126,6 +143,7 @@ This repository should be used as:
 - `article.test.ts` - 14 integration tests
 
 **Patterns Demonstrated:**
+
 - Public read access (getAll, getById without auth)
 - Ownership-based write access (only author can edit/delete)
 - beforeCreate hook (generates slug, checks uniqueness)
@@ -135,9 +153,11 @@ This repository should be used as:
 **Code Reduction:** 65% reduction in controller, 27% in service
 
 ### Complex Entity: Site Settings
+
 **Location:** `src/entities/site_settings/*`
 
 **Files:**
+
 - `site-setting.model.ts` - Drizzle schema with JSONB
 - `site-setting.dto.ts` - Zod schemas
 - `site-setting.service.ts` - Service with schema validation (145 lines)
@@ -148,6 +168,7 @@ This repository should be used as:
 - `schemas/` - Dynamic JSON schema validation
 
 **Patterns Demonstrated:**
+
 - Public read access (only published settings)
 - Protected write access (admin only)
 - System setting protection (cannot delete, must reset)
@@ -162,6 +183,7 @@ This repository should be used as:
 ### Phase 1: Backend Scaffold Generation
 
 **Command:**
+
 ```bash
 tstack-kit generate entity article \
   --with-admin \
@@ -173,6 +195,7 @@ tstack-kit generate entity article \
 ```
 
 **Process:**
+
 1. Parse CLI options
 2. Build template context (see `docs/CLI_SCAFFOLD_GUIDE.md`)
 3. Render templates using Handlebars
@@ -186,6 +209,7 @@ tstack-kit generate entity article \
 ### Phase 2: Fresh UI Admin Panel Generation
 
 **Command:**
+
 ```bash
 tstack-kit generate fresh-ui article \
   --api-url=http://localhost:3000 \
@@ -195,6 +219,7 @@ tstack-kit generate fresh-ui article \
 ```
 
 **Process:**
+
 1. Parse CLI options
 2. Build Fresh UI context
 3. Generate 9 files (config, types, service, 6 route pages)
@@ -207,6 +232,7 @@ tstack-kit generate fresh-ui article \
 ### Phase 3: AI-Assisted Customization
 
 **Copilot Integration:**
+
 1. Provide this repository URL as context to AI
 2. AI analyzes existing entities to understand patterns
 3. AI suggests appropriate CLI options based on user requirements
@@ -214,6 +240,7 @@ tstack-kit generate fresh-ui article \
 5. AI explains generated code and how to customize it further
 
 **Example Prompts:**
+
 - "Generate a blog article entity similar to the one in tstack-blog-v1-rc"
 - "Create a product entity with image uploads and category relationships"
 - "Generate admin panel for managing users with role-based access"
@@ -223,17 +250,20 @@ tstack-kit generate fresh-ui article \
 ## 📊 Benefits & Metrics
 
 ### Code Reduction
+
 - **Services:** 27% reduction (Article: 172 → 125 lines)
 - **Controllers:** 65% reduction (Article: 157 → 55 lines)
 - **Routes:** 40% reduction (Article: 30 → 18 lines)
 - **Overall:** 70-80% less boilerplate for new entities
 
 ### Time Savings
+
 - **Manual:** 2-3 hours to write boilerplate for new entity
 - **With CLI:** 10-15 minutes to customize generated scaffold
 - **Reduction:** 90% time savings!
 
 ### Quality Improvements
+
 - ✅ Consistent patterns across all entities
 - ✅ Type-safe with TypeScript generics
 - ✅ Comprehensive test coverage (138 tests passing)
@@ -248,6 +278,7 @@ tstack-kit generate fresh-ui article \
 **Total:** 138 test steps across 7 test suites
 
 **Test Suites:**
+
 1. **BaseService** (27 tests) - Unit tests for CRUD + lifecycle hooks
 2. **Article** (14 tests) - Integration tests for full HTTP flow
 3. **Article Admin** (25+ tests) - Admin panel tests
@@ -257,11 +288,13 @@ tstack-kit generate fresh-ui article \
 7. **Error Handler** (5+ tests) - Validation and error formatting
 
 **Run Tests:**
+
 ```bash
 deno task test
 ```
 
 **Expected Output:**
+
 ```
 ok | 7 passed (138 steps) | 0 failed (4s)
 ```
@@ -271,6 +304,7 @@ ok | 7 passed (138 steps) | 0 failed (4s)
 ## 📖 Quick Start for Developers
 
 ### 1. Clone & Setup
+
 ```bash
 git clone git@github.com:desingh-rajan/tstack-blog-v1-rc.git
 cd tstack-blog-v1-rc
@@ -282,16 +316,19 @@ deno task seed:superadmin
 ```
 
 ### 2. Run Development Server
+
 ```bash
 deno task dev
 ```
 
 ### 3. Run Tests
+
 ```bash
 deno task test
 ```
 
 ### 4. Study the Code
+
 1. Read `docs/BASE_ABSTRACTIONS_ARCHITECTURE.md` (architecture overview)
 2. Review `src/shared/services/base.service.ts` (base service)
 3. Review `src/shared/controllers/base.controller.ts` (base controller)
@@ -304,18 +341,21 @@ deno task test
 ## 🎓 Learning Path for New Developers
 
 ### Beginner (Day 1)
+
 1. Read `README.md` - Project overview
 2. Read `docs/BASE_ABSTRACTIONS_ARCHITECTURE.md` - Understand the patterns
 3. Review `src/entities/articles/article.service.ts` - Simple entity service
 4. Run tests: `deno task test src/entities/articles/article.test.ts`
 
 ### Intermediate (Day 2-3)
+
 1. Study `src/shared/services/base.service.ts` - Base service implementation
 2. Study `src/shared/controllers/base.controller.ts` - Base controller implementation
 3. Review lifecycle hooks pattern in `base.service.test.ts`
 4. Review authorization patterns in `article.test.ts`
 
 ### Advanced (Day 4-5)
+
 1. Study `src/entities/site_settings/*` - Complex entity with custom logic
 2. Review `docs/CLI_SCAFFOLD_GUIDE.md` - Understand CLI generation
 3. Review `docs/FRESH_UI_GENERATION_GUIDE.md` - Understand UI generation
@@ -326,11 +366,13 @@ deno task test
 ## 🔗 Related Resources
 
 ### Official Documentation
+
 - **tstack-kit CLI:** [npm package / GitHub repo]
 - **@tstack/admin:** Admin panel library
 - **@tstack/fresh-ui:** Fresh UI components
 
 ### Technologies Used
+
 - **Deno 2.x** - Runtime
 - **Hono** - Web framework
 - **Drizzle ORM** - Database ORM
@@ -339,6 +381,7 @@ deno task test
 - **Fresh** - UI framework (in blog-v1-ui)
 
 ### Community
+
 - **Discord:** [Link to tstack Discord]
 - **GitHub Discussions:** Use this repo's discussions for questions
 
@@ -347,6 +390,7 @@ deno task test
 ## 🎯 Next Steps for tstack-kit Integration
 
 ### For CLI Developers
+
 1. ✅ Review all documentation files in `docs/`
 2. ✅ Implement template rendering with Handlebars
 3. ✅ Add CLI commands for entity and fresh-ui generation
@@ -354,6 +398,7 @@ deno task test
 5. ✅ Integrate AI assistance for customization
 
 ### For AI/Copilot Integration
+
 1. ✅ Provide this repository URL as context
 2. ✅ Allow AI to analyze entity patterns
 3. ✅ Let AI suggest appropriate CLI options
@@ -361,6 +406,7 @@ deno task test
 5. ✅ Train AI on testing patterns from this repo
 
 ### For Documentation Writers
+
 1. ✅ Use this repository in tutorials
 2. ✅ Reference specific files as examples
 3. ✅ Link to test files for validation
@@ -388,6 +434,7 @@ This is a reference implementation repository. If you find issues or have sugges
 ## 🙏 Acknowledgments
 
 This repository demonstrates best practices from:
+
 - Rails (convention over configuration)
 - NestJS (decorator-based architecture)
 - Spring Boot (lifecycle hooks)
@@ -400,6 +447,7 @@ All adapted for **Deno + Hono + TypeScript**! 🎉
 ## 📞 Contact
 
 For questions about tstack-kit integration, reach out to:
+
 - **GitHub Issues:** Use this repository's issue tracker
 - **Email:** [Your email]
 - **Discord:** [Discord server link]

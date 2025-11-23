@@ -149,10 +149,10 @@ class TestEntityWithHooksService extends BaseService<
     // Add audit trail
     return {
       ...data,
-      metadata: { 
-        ...data.metadata, 
+      metadata: {
+        ...data.metadata,
         lastModifiedId: id,
-        modifiedBy: "beforeUpdate" 
+        modifiedBy: "beforeUpdate"
       },
     };
   }

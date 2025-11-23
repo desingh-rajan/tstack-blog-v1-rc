@@ -665,27 +665,32 @@ interface FreshUIContext {
 ## ✅ Post-Generation Steps
 
 1. **Install dependencies** (if not already installed):
+
    ```bash
    deno install
    ```
 
 2. **Update navigation** (if admin pages):
    Add link to `components/layout/AdminLayout.tsx`:
+
    ```tsx
    <a href="/admin/{{entityNamePlural}}">{{displayNamePlural}}</a>
    ```
 
 3. **Format code**:
+
    ```bash
    deno fmt
    ```
 
 4. **Start dev server**:
+
    ```bash
    deno task start
    ```
 
 5. **Print success message**:
+
    ```
    ✅ Successfully generated Fresh UI for {{EntityName}}!
    

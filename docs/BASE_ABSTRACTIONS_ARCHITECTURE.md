@@ -17,6 +17,7 @@ This architecture should be used as the foundation for **tstack-kit CLI** to aut
 **Purpose:** Provides standard CRUD operations for all entities with lifecycle hooks.
 
 **Features:**
+
 - ✅ Generic CRUD: `getAll()`, `getById()`, `create()`, `update()`, `delete()`
 - ✅ Returns all columns by default (use Drizzle's `select()` without args)
 - ✅ Lifecycle hooks: `beforeCreate`, `afterCreate`, `beforeUpdate`, `afterUpdate`, `beforeDelete`, `afterDelete`
@@ -24,6 +25,7 @@ This architecture should be used as the foundation for **tstack-kit CLI** to aut
 - ✅ Type-safe with TypeScript generics
 
 **Generic Signature:**
+
 ```typescript
 export abstract class BaseService<T, CreateDTO, UpdateDTO, ResponseDTO> {
   constructor(
@@ -34,6 +36,7 @@ export abstract class BaseService<T, CreateDTO, UpdateDTO, ResponseDTO> {
 ```
 
 **Usage Pattern:**
+
 ```typescript
 // 1. Define your types
 interface Article {
@@ -103,6 +106,7 @@ export class ArticleService extends BaseService<
 ```
 
 **Key Pattern: Drizzle Column Spreading**
+
 ```typescript
 // ❌ OLD: Manual column mapping (repetitive, error-prone)
 .select({
@@ -131,6 +135,7 @@ export class ArticleService extends BaseService<
 **Purpose:** Provides standard HTTP handlers with **declarative authorization**.
 
 **Features:**
+
 - ✅ Generic CRUD handlers: `getAll`, `getById`, `create`, `update`, `delete`
 - ✅ Declarative `authConfig` in constructor (Rails-style)
 - ✅ Role-based access control (RBAC)
@@ -141,6 +146,7 @@ export class ArticleService extends BaseService<
 - ✅ Consistent API responses via `ApiResponse` utility
 
 **Generic Signature:**
+
 ```typescript
 export abstract class BaseController<ServiceType extends {
   getAll: () => Promise<any[]>;
@@ -162,6 +168,7 @@ export abstract class BaseController<ServiceType extends {
 ```
 
 **Usage Pattern:**
+
 ```typescript
 // 1. Basic controller (no auth)
 export class ArticleController extends BaseController<typeof ArticleService> {
@@ -229,6 +236,7 @@ export class SiteSettingController extends BaseController<typeof SiteSettingServ
 ```
 
 **Authorization Flow:**
+
 ```
 Request → requireAuth middleware (sets c.get("user"))
        → validate middleware (sets c.get("validatedData"))
@@ -243,6 +251,7 @@ Request → requireAuth middleware (sets c.get("user"))
 ```
 
 **Static Export Helper:**
+
 ```typescript
 // Instead of manually exporting each method:
 export const ArticleControllerStatic = {
@@ -265,6 +274,7 @@ export const ArticleControllerStatic = controller.toStatic();
 ### Layer 3: Route Factories (Route Layer)
 
 **Files:**
+
 - `src/shared/routes/base-route.factory.ts` (~75 lines) - CRUD routes
 - `src/shared/routes/admin-route.factory.ts` (~60 lines) - Admin panel routes
 
@@ -273,6 +283,7 @@ export const ArticleControllerStatic = controller.toStatic();
 **Purpose:** Eliminates route boilerplate with declarative configuration.
 
 **Features:**
+
 - ✅ Auto-registers CRUD routes: GET (list), GET/:id, POST, PUT/:id, DELETE/:id
 - ✅ `publicRoutes` array: routes NOT in this list become protected
 - ✅ `disabledRoutes` array: routes you don't want to expose at all
@@ -280,6 +291,7 @@ export const ArticleControllerStatic = controller.toStatic();
 - ✅ 40-60% code reduction in route files
 
 **Configuration Interface:**
+
 ```typescript
 interface CrudRouteConfig {
   basePath: string;                    // e.g., "/articles"
@@ -305,6 +317,7 @@ interface CrudRouteConfig {
 ```
 
 **Usage Pattern:**
+
 ```typescript
 // 1. Public read, authenticated write
 const articleRoutes = BaseRouteFactory.createCrudRoutes({
@@ -356,6 +369,7 @@ const limitedRoutes = BaseRouteFactory.createCrudRoutes({
 ```
 
 **Middleware Application Logic:**
+
 ```typescript
 // Routes NOT in publicRoutes automatically get protected
 if (publicRoutes.includes("getAll")) {
@@ -375,11 +389,13 @@ if (!disabledRoutes.includes("getAll")) {
 **Purpose:** Standardize @tstack/admin panel route registration.
 
 **Features:**
+
 - ✅ Auto-registers all admin routes: list, new, create, show, edit, update, patch, delete, bulk-delete
 - ✅ `customHandlers` for overriding default adapter methods
 - ✅ Comprehensive documentation for override patterns
 
 **Configuration Interface:**
+
 ```typescript
 interface AdminRouteConfig {
   baseUrl: string;                      // e.g., "/ts-admin/articles"
@@ -396,6 +412,7 @@ interface AdminRouteConfig {
 ```
 
 **Usage Pattern:**
+
 ```typescript
 // 1. Simple admin panel (default adapter)
 const adminRoutes = AdminRouteFactory.createAdminRoutes({
@@ -417,6 +434,7 @@ const siteSettingAdminRoutes = AdminRouteFactory.createAdminRoutes({
 ```
 
 **When to Use Custom Handlers:**
+
 - ✅ Complex validation beyond schema (e.g., uniqueness checks)
 - ✅ Authorization based on entity state (e.g., isSystem flag)
 - ✅ Side effects (audit logs, notifications, cache invalidation)
@@ -632,33 +650,40 @@ tstack-kit generate entity article \
 ### What CLI Should Generate
 
 #### 1. Model File (`article.model.ts`)
+
 - Drizzle table schema
 - TypeScript type inference
 
 #### 2. DTO File (`article.dto.ts`)
+
 - Zod schemas for create/update
 - TypeScript type exports
 
 #### 3. Service File (`article.service.ts`)
+
 - Class extending BaseService
 - Constructor calling super()
 - Placeholder comments for custom queries
 - Placeholder comments for lifecycle hooks
 
 #### 4. Controller File (`article.controller.ts`)
+
 - Class extending BaseController
 - Constructor with authConfig based on CLI options
 - toStatic() export
 
 #### 5. Route File (`article.route.ts`)
+
 - BaseRouteFactory.createCrudRoutes() call
 - Configuration based on CLI options
 
 #### 6. Admin Route File (`article.admin.route.ts`) [if --with-admin]
+
 - AdminRouteFactory.createAdminRoutes() call
 - Adapter configuration
 
 #### 7. Test File (`article.test.ts`)
+
 - Integration test template
 - CRUD operation tests
 - Authorization tests
@@ -685,6 +710,7 @@ tstack-kit generate entity article \
 ## 🎓 Learning Resources
 
 ### Reference Implementation
+
 - **Repository:** `tstack-blog-v1-rc`
 - **Base Abstractions:**
   - `src/shared/services/base.service.ts`
@@ -696,11 +722,13 @@ tstack-kit generate entity article \
   - Complex: `src/entities/site_settings/*` (custom handlers)
 
 ### Test Coverage
+
 - `src/shared/services/base.service.test.ts` - 27 test cases
 - `src/entities/articles/article.test.ts` - 14 integration tests
 - `TESTING_COMPREHENSIVE_GUIDE.md` - Testing patterns reference
 
 ### Documentation
+
 - `docs/BASE_ABSTRACTIONS_ARCHITECTURE.md` - This document
 - `docs/RBAC.md` - Authorization patterns
 - `TESTING_COMPREHENSIVE_GUIDE.md` - Test patterns
