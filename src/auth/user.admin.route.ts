@@ -3,6 +3,7 @@ import { db } from "../config/database.ts";
 import { users } from "./user.model.ts";
 import { requireAuth } from "../shared/middleware/requireAuth.ts";
 import { AdminRouteFactory } from "../shared/routes/admin-route.factory.ts";
+import { UserAdminController } from "./user.admin.controller.ts";
 
 const ADMIN_BASE_URL = "/ts-admin/users";
 
@@ -35,6 +36,10 @@ const userAdminRoutes = AdminRouteFactory.createAdminRoutes({
   baseUrl: ADMIN_BASE_URL,
   adapter: userAdmin,
   authMiddleware: [requireAuth],
+  customHandlers: {
+    create: UserAdminController.create,
+    update: UserAdminController.update,
+  },
 });
 
 export default userAdminRoutes;

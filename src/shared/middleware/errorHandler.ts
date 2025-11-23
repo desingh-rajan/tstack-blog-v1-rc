@@ -72,6 +72,22 @@ export function errorHandler(err: Error, c: Context) {
     );
   }
 
+  // Handle authorization errors from HonoAdminAdapter
+  if (err.message && err.message.includes("Forbidden: Requires one of:")) {
+    return c.json(
+      ApiResponse.error("Access forbidden. You do not have permission to access this resource."),
+      403,
+    );
+  }
+
+  // Handle generic "Forbidden" errors
+  if (err.message && (err.message.includes("Forbidden") || err.message.includes("forbidden"))) {
+    return c.json(
+      ApiResponse.error("Access forbidden. You do not have permission to perform this action."),
+      403,
+    );
+  }
+
   // Generic server error (sanitize in production)
   const message = isProduction
     ? "Internal server error"

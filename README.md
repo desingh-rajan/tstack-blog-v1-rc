@@ -516,6 +516,120 @@ describe("Article API", () => {
 
 Tests run automatically with `deno task test`.
 
+### Test Coverage Requirements ⚠️ MANDATORY
+
+**ALL API controllers, services, and business logic MUST have corresponding test files.**
+
+This is a **non-negotiable requirement** for tstack-kit. The "Invalid hash format" bug that prevented users created via admin panel from logging in was only discovered during manual testing because user admin APIs lacked test coverage. Comprehensive tests prevent regressions and serve as living documentation.
+
+#### Coverage Standards
+
+**Minimum Required:**
+
+- ✅ All CRUD operations (create, read, update, delete)
+- ✅ Authorization checks (401 unauthorized, 403 forbidden)
+- ✅ Input validation (400 bad request for invalid data)
+- ✅ Edge cases (404 not found, duplicate entries, missing fields)
+- ✅ Business logic (password hashing, data transformations, calculations)
+- ✅ Success paths (201 created, 200 ok with expected response structure)
+
+**Example Coverage Checklist for User Admin API:**
+
+```typescript
+// user.admin.test.ts
+describe("User Admin API", () => {
+  // Authorization
+  ✅ Should return 401 when no auth token provided
+  ✅ Should return 403 when non-superadmin attempts access
+  
+  // Create Operations
+  ✅ Should create user with properly hashed password (not plain text)
+  ✅ Should allow login immediately after creation (regression test)
+  ✅ Should return 400 for duplicate email
+  ✅ Should return 400 for missing required fields
+  
+  // Read Operations
+  ✅ Should list all users with pagination
+  ✅ Should get user by ID
+  ✅ Should return 404 for non-existent user
+  
+  // Update Operations
+  ✅ Should update user without changing password
+  ✅ Should hash new password when updating
+  ✅ Should return 404 when updating non-existent user
+  
+  // Delete Operations
+  ✅ Should delete user successfully
+  ✅ Should return 404 when deleting non-existent user
+});
+```
+
+#### Test File Location
+
+Tests MUST live in the same directory as the code they test:
+
+```text
+src/entities/articles/
+  article.controller.ts
+  article.test.ts          ← Tests for controller
+  article.admin.controller.ts
+  article.admin.test.ts    ← Tests for admin controller
+  
+src/auth/
+  auth.service.ts
+  auth.test.ts             ← Tests for service
+  user.admin.controller.ts
+  user.admin.test.ts       ← Tests for admin operations
+```
+
+#### When to Write Tests
+
+**BEFORE committing:**
+
+- New API endpoints (controllers)
+- New business logic (services)
+- Changes to existing functionality
+
+**Immediately after:**
+
+- Discovering bugs during manual testing
+- Implementing bug fixes (add regression test)
+
+#### Running Tests During Development
+
+```bash
+# Run specific test file while developing
+deno test src/auth/user.admin.test.ts --allow-all
+
+# Watch mode for rapid iteration
+deno task test:watch
+
+# Full suite before committing
+deno task test
+
+# Coverage report to identify gaps
+deno task test:coverage
+```
+
+#### CI/CD Integration
+
+Tests run automatically on every push. **Builds MUST fail if:**
+
+- Any test fails
+- Coverage drops below threshold (configure in CI)
+- New controllers/services lack corresponding test files
+
+#### Enforcement
+
+Pull requests without adequate test coverage for new/modified code will be **rejected**. Use the coverage report to identify untested code:
+
+```bash
+deno task test:coverage
+# Check coverage/ directory for HTML report
+```
+
+**Target Coverage:** Minimum 80% for controllers and services, 100% for critical paths (auth, payments, data integrity).
+
 ## 15. Error Handling
 
 Central error utilities live under `shared/utils/errors.ts`. Throw typed errors
